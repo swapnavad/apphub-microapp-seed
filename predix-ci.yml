@@ -28,7 +28,7 @@ steps:
     script: |
       service docker start && sleep 5
       
-      docker load -i apphub_microapp_seed.tar
+      docker load -i /root/apphub_microapp_seed.tar
       CONTAINER_ID=docker run -d apphub_microapp_seed tail -f /dev/null
       docker exec -it $CONTAINER_ID 'npm test'
   deploy:
@@ -36,7 +36,7 @@ steps:
       - apphub_microapp_seed.tar
     script: "tar -xvf apphub-microapp-seed.tar && cd repos && cf push && cf apps"
   register_with_apphub:
-    script: "scripts/apphub_registration.sh"
+    script: ""
     environment:
       UAA_SERVICE_PLAN: 'Free'
       UAA_INSTANCE_NAME: 'predix_ci_apphub_uaa'
