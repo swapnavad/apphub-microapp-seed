@@ -6,7 +6,7 @@ pipeline:
 
 steps:
   build:
-    script: "cd ~/repos && npm install && npm run dist && cd ~ && tar -cvf apphub-microapp-seed.tar ./repos"
+    script: "ls ~ && cd ~/repos && npm install && npm run dist && cd ~ && tar -cvf apphub-microapp-seed.tar ./repos"
     environment:
       HOME: '/root'
     output: 
