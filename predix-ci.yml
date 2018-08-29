@@ -1,0 +1,28 @@
+---
+pipeline:
+  build:
+    test:
+      deploy: "register_with_apphub"
+
+steps:
+  build:
+    script: "cd ~/repos && npm install && npm run dist && cd ~ && tar -cvf apphub-microapp-seed.tar ./repos"
+    output: 
+      - apphub_microapp_seed.tar
+  test:
+    input: 
+      - apphub_microapp_seed.tar
+    script: "cd ~ && tar -xvf apphub-microapp-seed.tar && cd repos && npm test"
+  deploy:
+    input: 
+      - apphub_microapp_seed.tar
+    script: "cd ~ && tar -xvf apphub-microapp-seed.tar && cd repos && cf push && cf apps"
+  register_with_apphub:
+    script: "scripts/apphub_registration.sh"
+    environment:
+      UAA_SERVICE_PLAN: 'Free'
+      UAA_INSTANCE_NAME: 'predix_ci_apphub_uaa'
+      PREDIX_APPHUB_NAME: 'predix_ci_apphub'
+      PREDIX_APPHUB_PLAN: 'Beta'
+      CLIENT_SECRET: '$CLIENT_SECRET'
+
