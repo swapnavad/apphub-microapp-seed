@@ -36,7 +36,7 @@ steps:
       - apphub_microapp_seed.tar
     script: "tar -xvf apphub-microapp-seed.tar && cd repos && cf push && cf apps"
   register_with_apphub:
-    script: ""
+    script: "scripts/apphub_registration.sh" #TODO
     environment:
       UAA_SERVICE_PLAN: 'Free'
       UAA_INSTANCE_NAME: 'predix_ci_apphub_uaa'
