@@ -18,7 +18,7 @@ steps:
         cd apphub-microapp-seed && \
         npm install && \
         npm run dist'
-      docker commit $CONTAINER apphub_microapp_seed
+      docker commit $CONTAINER_id apphub_microapp_seed
       docker save apphub_microapp_seed -o apphub_microapp_seed.tar
     output: 
       - apphub_microapp_seed.tar
