@@ -10,7 +10,7 @@ steps:
       service docker start && sleep 5 # Wait for docker daemon to start
       
       docker pull predixadoption/devrelprediximage
-      CONTAINER_ID=docker run -d devrelprediximage tail -f /dev/null
+      CONTAINER_ID=`docker run -d devrelprediximage tail -f /dev/null`
       docker exec -it $CONTAINER_ID '
         git clone https://github.com/PredixCI/apphub-microapp-seed.git && \ 
         cd apphub-microapp-seed && \
