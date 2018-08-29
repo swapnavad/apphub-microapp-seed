@@ -6,13 +6,29 @@ pipeline:
 
 steps:
   build:
-    script: "service docker start && sleep 10 && docker pull predixadoption/devrelprediximage && docker images && npm install && npm run dist && cd ~ && tar -cvf apphub-microapp-seed.tar ./repos"
+    script: |
+      service docker start && sleep 5 # Wait for docker daemon to start
+      
+      docker pull predixadoption/devrelprediximage
+      CONTAINER_ID=docker run -d devrelprediximage tail -f /dev/null
+      docker exec -it $CONTAINER_ID '
+        git clone https://github.com/PredixCI/apphub-microapp-seed.git && \ 
+        cd apphub-microapp-seed && \
+        npm install && \
+        npm run dist'
+      docker commit $CONTAINER apphub_microapp_seed
+      docker save apphub_microapp_seed -o apphub_microapp_seed.tar
     output: 
       - apphub_microapp_seed.tar
   test:
     input: 
       - apphub_microapp_seed.tar
-    script: "ls -la && tar -xvf apphub-microapp-seed.tar && cd repos && npm test"
+    script: |
+      service docker start && sleep 5
+      
+      docker load -i apphub_microapp_seed.tar
+      CONTAINER_ID=docker run -d apphub_microapp_seed tail -f /dev/null
+      docker exec -it $CONTAINER_ID 'npm test'
   deploy:
     input: 
       - apphub_microapp_seed.tar
