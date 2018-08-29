@@ -11,7 +11,8 @@ steps:
       
       docker pull predixadoption/devrelprediximage
       CONTAINER_ID=`docker run -d predixadoption/devrelprediximage tail -f /dev/null`
-      docker exec -it $CONTAINER_ID '
+      docker exec -it $CONTAINER_ID bash -c '
+        cd /tmp && \
         git clone https://github.com/PredixCI/apphub-microapp-seed.git && \ 
         cd apphub-microapp-seed && \
         npm install && \
