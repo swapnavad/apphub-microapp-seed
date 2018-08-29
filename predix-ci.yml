@@ -6,17 +6,17 @@ pipeline:
 
 steps:
   build:
-    script: "cd ~/repos && npm install && npm run dist && cd ~ && tar -cvf apphub-microapp-seed.tar ./repos"
+    script: "cd $HOME/repos && npm install && npm run dist && cd $HOME && tar -cvf apphub-microapp-seed.tar ./repos"
     output: 
       - apphub_microapp_seed.tar
   test:
     input: 
       - apphub_microapp_seed.tar
-    script: "cd ~ && tar -xvf apphub-microapp-seed.tar && cd repos && npm test"
+    script: "cd $HOME && tar -xvf apphub-microapp-seed.tar && cd repos && npm test"
   deploy:
     input: 
       - apphub_microapp_seed.tar
-    script: "cd ~ && tar -xvf apphub-microapp-seed.tar && cd repos && cf push && cf apps"
+    script: "cd $HOME && tar -xvf apphub-microapp-seed.tar && cd repos && cf push && cf apps"
   register_with_apphub:
     script: "scripts/apphub_registration.sh"
     environment:
