@@ -6,7 +6,7 @@ pipeline:
 
 steps:
   build:
-    script: "sudo docker pull predixadoption/devrelprediximage && docker images && npm install && npm run dist && cd ~ && tar -cvf apphub-microapp-seed.tar ./repos"
+    script: "service docker start && docker pull predixadoption/devrelprediximage && docker images && npm install && npm run dist && cd ~ && tar -cvf apphub-microapp-seed.tar ./repos"
     output: 
       - apphub_microapp_seed.tar
   test:
