@@ -31,7 +31,7 @@ export default () => (
       <ul>
         {features.map(feature => (
           <li key={feature.title}>
-            <a href={feature.href} title={feature.title} target="_blank">
+            <a href={feature.href} title={feature.title} rel="noopener noreferrer" target="_blank">
               {feature.title}
             </a>
           </li>
