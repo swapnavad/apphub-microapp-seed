@@ -8,31 +8,31 @@ steps:
   build:
     script: |
       service docker start && sleep 5 # Wait for docker daemon to start
-      
+
       set -x
       docker pull predixadoption/devrelprediximage
       CONTAINER_ID=`docker run -d predixadoption/devrelprediximage tail -f /dev/null`
       docker exec -t $CONTAINER_ID bash -c '
         cd /tmp && \
-        git clone https://github.com/swapnavad/apphub-microapp-seed && \ 
+        git clone https://github.com/swapnavad/apphub-microapp-seed && \
         cd apphub-microapp-seed && \
         npm install && \
         npm run dist'
       docker commit $CONTAINER_ID apphub_microapp_seed
       docker save apphub_microapp_seed -o /root/apphub_microapp_seed.tar
-    output: 
+    output:
       - apphub_microapp_seed.tar
   test:
-    input: 
+    input:
       - apphub_microapp_seed.tar
     script: |
       service docker start && sleep 5
-      
+
       docker load -i /root/apphub_microapp_seed.tar
       CONTAINER_ID=`docker run -d apphub_microapp_seed tail -f /dev/null`
-      docker exec -it $CONTAINER_ID 'npm test'
+      docker exec -t $CONTAINER_ID 'npm test'
   deploy:
-    input: 
+    input:
       - apphub_microapp_seed.tar
     script: "tar -xvf apphub-microapp-seed.tar && cd repos && cf push && cf apps"
   register_with_apphub:
@@ -43,4 +43,3 @@ steps:
       PREDIX_APPHUB_NAME: 'predix_ci_apphub'
       PREDIX_APPHUB_PLAN: 'Beta'
       CLIENT_SECRET: '$CLIENT_SECRET'
-
