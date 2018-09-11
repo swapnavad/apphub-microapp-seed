@@ -33,7 +33,8 @@ steps:
       docker exec -t $CONTAINER_ID bash -c '
       cd /tmp && \
       cd apphub-microapp-seed && \
-      npm test'
+      npm test
+      npm run test:client -- -u'
   deploy:
     input:
       - apphub_microapp_seed.tar
